@@ -6,6 +6,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased]
+
+### Fixed
+
+- "Row Count After Each Step" chart: steps that share a name (the default pipeline runs `NormalizeText` twice) were drawn in one x slot, so Plotly stacked them into a single bar of 152 rows. Bars are now positioned by execution index with numbered labels (`6. Normalize Text`, `7. Normalize Text`), one bar per executed step. Chart construction moved to `src/charts.py`; ETL transforms and audit records are unchanged.
+- Added `tests/test_charts.py` (6 regression tests).
+- Updated `screenshots/02_core_feature.png` to show the corrected chart.
+
+---
+
 ## [1.0.0] — 2026-06-18
 
 ### Added
