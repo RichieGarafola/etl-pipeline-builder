@@ -51,8 +51,11 @@ rows = []
 for i in range(1, 81):
     start = date(2024, 1, 1) + timedelta(days=random.randint(0, 365))
     end   = start + timedelta(days=random.randint(90, 730))
+    # Retained (value unused) so the seeded random sequence, and therefore every
+    # other generated field, is identical to earlier versions of this dataset.
+    _unused_draw = random.randint(10, 99)
     rows.append({
-        "Contract ID":     f"W{random.randint(10,99)}QKN-{2024 + random.randint(0,1)}-C-{i:04d}",
+        "Contract ID":     f"CTR-DEMO-{2024 + random.randint(0,1)}-{i:04d}",
         "Agency Name":     random.choice(AGENCIES) if random.random() > 0.08 else "",
         "Vendor":          random.choice(VENDORS),
         "Category":        random.choice(CATEGORIES),

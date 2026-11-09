@@ -10,7 +10,7 @@ The sample dataset represents a synthetic government contracts register. Column 
 
 | Original Column Name | snake_case Name | Raw Type | Description | Sample Raw Value |
 |---|---|---|---|---|
-| `Contract ID` | `contract_id` | str | Unique contract identifier assigned by the procurement office | `W27QKN-2024-C-0001` |
+| `Contract ID` | `contract_id` | str | Unique contract identifier assigned by the procurement office | `CTR-DEMO-2025-0001` |
 | `Agency Name` | `agency_name` | str | Full name of the awarding federal agency | `Department of Defense` |
 | `Vendor` | `vendor` | str | Prime contractor name; may have leading/trailing whitespace | `  Apex Federal Solutions  ` |
 | `Category` | `category` | str | Procurement category | `IT Services` |
@@ -40,7 +40,7 @@ The following shows each column's state after the default 9-step pipeline comple
 
 | Column | Post-Transform Name | Output Type | Transformation Applied | Output Range / Format |
 |---|---|---|---|---|
-| `contract_id` | `contract_id` | str | Header normalized to snake_case; whitespace stripped | e.g., `W27QKN-2024-C-0001` |
+| `contract_id` | `contract_id` | str | Header normalized to snake_case; whitespace stripped | e.g., `CTR-DEMO-2025-0001` |
 | `agency_name` | `agency_name` | str | Header normalized; rows with null/empty dropped | Non-empty string values only |
 | `vendor` | `vendor` | str | Header normalized; whitespace stripped; title-cased | `Apex Federal Solutions` |
 | `category` | `category` | str | Header normalized; whitespace stripped | `IT Services` |
