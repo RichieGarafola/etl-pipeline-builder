@@ -8,11 +8,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
 
 from src.extractor   import extract_csv, extract_sample
 from src.pipeline    import run_pipeline, default_steps, PipelineResult
+from src.charts      import build_row_count_figure
 from src.loader      import load_csv, load_sqlite_sql, load_excel
 from src.transformer import (
     NormalizeHeaders, StripStrings, DropDuplicates, DropNullRows,
@@ -127,26 +127,8 @@ with tab1:
         use_container_width=True,
     )
 
-    # Step-by-step row count funnel chart
-    labels = ["Raw"] + [r.name for r in result.step_log]
-    values = [result.rows_extracted] + [r.rows_out for r in result.step_log]
-    colors = [BLUE] + [
-        "#E74C3C" if r.rows_dropped > 0 else "#2ECC71"
-        for r in result.step_log
-    ]
-
-    fig = go.Figure(go.Bar(
-        x=labels, y=values,
-        marker_color=colors,
-        text=values, textposition="outside",
-    ))
-    fig.update_layout(
-        title="Row Count After Each Step",
-        plot_bgcolor="white", paper_bgcolor="white", font=FONT,
-        margin=dict(t=48, b=40, l=40, r=20),
-        xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=True, gridcolor="#EEEEEE"),
-    )
+    # Step-by-step row count funnel chart (one bar per executed step)
+    fig = build_row_count_figure(result, font=FONT)
     st.plotly_chart(fig, use_container_width=True)
 
 

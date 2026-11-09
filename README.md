@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-69%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/tests-75%20passing-brightgreen)](tests/)
 [![CI](https://github.com/RichieGarafola/etl-pipeline-builder/actions/workflows/tests.yml/badge.svg)](https://github.com/RichieGarafola/etl-pipeline-builder/actions/workflows/tests.yml)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red.svg)](https://streamlit.io/)
 
@@ -119,13 +119,14 @@ etl-pipeline-builder/
 │   ├── extractor.py                 # Stage 1 — CSV extraction
 │   ├── transformer.py               # Stage 2 — 10 TransformStep classes + STEP_REGISTRY
 │   ├── loader.py                    # Stage 3 — CSV, Excel, SQLite load targets
-│   └── pipeline.py                  # Orchestration — PipelineResult, run_pipeline(), default_steps()
+│   ├── pipeline.py                  # Orchestration — PipelineResult, run_pipeline(), default_steps()
+│   └── charts.py                    # Row-count chart builder (one bar per executed step)
 ├── data/
 │   └── sample/
 │       └── sample_raw.csv           # 90-row dirty government contracts dataset
 ├── docs/
 │   ├── ARCHITECTURE.md              # Stage Reference, step dependency graph, 5 design decisions
-│   ├── TESTING.md                   # 69-test inventory, per-class breakdown, known gaps
+│   ├── TESTING.md                   # 75-test inventory, per-class breakdown, known gaps
 │   ├── DATA_DICTIONARY.md           # Input/output schemas, transformation catalog
 │   └── ENGINEERING_DECISIONS.md     # Six engineering decisions with alternatives and rationale
 ├── screenshots/
@@ -139,7 +140,8 @@ etl-pipeline-builder/
 │   ├── test_transformer.py          # 34 tests — all 10 step types
 │   ├── test_pipeline.py             # 21 tests — pipeline orchestration
 │   ├── test_extractor.py            # 6 tests  — extraction
-│   └── test_loader.py               # 8 tests  — CSV / Excel / SQLite load targets
+│   ├── test_loader.py               # 8 tests  — CSV / Excel / SQLite load targets
+│   └── test_charts.py               # 6 tests  — row-count chart regression
 ├── .streamlit/
 │   └── config.toml                  # Portfolio standard theme
 ├── .github/
@@ -264,7 +266,7 @@ csv_bytes = load_csv(result.output_df)  # BytesIO CSV
 pytest tests/ -v
 ```
 
-**69 tests** across 4 files:
+**75 tests** across 5 files:
 
 | File | Tests | Coverage |
 |---|---|---|
@@ -272,6 +274,7 @@ pytest tests/ -v
 | `test_pipeline.py` | 21 | Pipeline orchestration, PipelineResult structure, row count consistency, error handling |
 | `test_extractor.py` | 6 | Return type, column presence, string dtype, explicit path, empty file error |
 | `test_loader.py` | 8 | CSV BytesIO + disk, SQLite SQL dump content, Excel BytesIO + disk |
+| `test_charts.py` | 6 | Row-count chart: one bar per executed step, repeated step names kept separate, values match the audit trail |
 
 No mocking of internal library functions. `TestRunPipeline` and `TestDefaultSteps` run the full pipeline against `data/sample/sample_raw.csv` as integration tests.
 
@@ -324,7 +327,7 @@ See [docs/TESTING.md](docs/TESTING.md) for the complete per-class breakdown and 
 |---|---|
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Stage Reference, step execution model, step dependency graph, design decisions with rationale |
 | [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) | Input and output schemas, transformation catalog with before/after examples, export format specifications |
-| [docs/TESTING.md](docs/TESTING.md) | 69-test inventory, per-class breakdown, known gaps, testing philosophy |
+| [docs/TESTING.md](docs/TESTING.md) | 75-test inventory, per-class breakdown, known gaps, testing philosophy |
 | [docs/ENGINEERING_DECISIONS.md](docs/ENGINEERING_DECISIONS.md) | Six engineering decisions with alternatives considered and rationale |
 
 ---

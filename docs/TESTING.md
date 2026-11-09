@@ -30,7 +30,8 @@ All tests pass with `pytest tests/ -v` from the project root. No additional setu
 | `test_pipeline.py` | 3 | 21 | Pipeline orchestration: PipelineResult structure, row count consistency, step log integrity, error handling |
 | `test_extractor.py` | 2 | 6 | Extraction: return type, column presence, string dtype, explicit path, empty file error |
 | `test_loader.py` | 3 | 8 | Load targets: CSV BytesIO + disk, SQLite SQL dump, Excel BytesIO + disk |
-| **Total** | **19** | **69** | |
+| `test_charts.py` | — | 6 | Row-count chart: distinct position per executed step, repeated step names not merged, bar values match the audit trail |
+| **Total** | **19** | **75** | |
 
 ---
 
@@ -74,6 +75,10 @@ All tests pass with `pytest tests/ -v` from the project root. No additional setu
 | `TestLoadCsv` | 3 | Returns `BytesIO`; `BytesIO` content parses back to correct DataFrame; writes to disk correctly |
 | `TestLoadSqliteSql` | 2 | Returns `BytesIO`; content contains `CREATE TABLE` and table name |
 | `TestLoadExcel` | 3 | Returns `BytesIO`; `BytesIO` content readable as Excel with correct schema; writes to disk correctly |
+
+### `test_charts.py`
+
+Module-level regression tests for `build_row_count_figure()`. Plotly merges bars that share an x category, so the two `NormalizeText` steps in the default pipeline previously rendered as one bar with a summed count. The tests check that every executed step has its own x position, bar values equal `[rows_extracted] + rows_out` per step in execution order, no position sums counts across executions, repeated names stay visible as `6. Normalize Text` / `7. Normalize Text`, and a generic repeated step (`DropDuplicates` twice) is not merged.
 
 ---
 
